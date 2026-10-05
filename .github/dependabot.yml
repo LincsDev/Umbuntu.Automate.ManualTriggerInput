@@ -1,0 +1,36 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      # The package's published dependency ranges are deliberate: their lower bounds are the oldest
+      # versions it supports (and is compiled against). Widen them by hand, not via Dependabot.
+      - dependency-name: Umbraco.Cms.Core
+      - dependency-name: Umbraco.Automate.Core
+      - dependency-name: Umbraco.Automate.Web
+      # Test site: stay on Umbraco/Automate 18 until the package supports the next major.
+      - dependency-name: Umbraco.*
+        update-types: [version-update:semver-major]
+    groups:
+      umbraco-test-site:
+        patterns: [Umbraco.*]
+      test-tooling:
+        patterns: [xunit*, NSubstitute]
+
+  - package-ecosystem: npm
+    directory: /src/Umbuntu.Automate.ManualTriggerInput/Client
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "@umbraco-cms/backoffice"
+        update-types: [version-update:semver-major]
+    groups:
+      client-tooling:
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

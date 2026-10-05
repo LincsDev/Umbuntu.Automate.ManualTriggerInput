@@ -73,6 +73,17 @@ The backoffice client lives in `src/Umbuntu.Automate.ManualTriggerInput/Client`.
 - **Tests:** `dotnet test --project tests/Umbuntu.Automate.ManualTriggerInput.Tests`
 - **Test site:** `dotnet run --project src/Umbuntu.Automate.ManualTriggerInput.TestSite` starts Umbraco and Automate with the package referenced directly. It uses a local SQLite database, and an admin user is created on first run. The admin's credentials are in `appsettings.Development.json` and are for local testing only. To create automations, first create an API user, then create an Automate workspace that uses it as its service account.
 
+### Releasing
+
+Versions come from git tags, via [MinVer](https://github.com/adamralph/minver). To release, push a tag:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+The **Release** workflow builds, tests and packs the tagged commit, pushes the package to nuget.org using Trusted Publishing, and creates a GitHub release. Tags with a suffix, such as `v1.1.0-beta.1`, are published as prereleases.
+
 ## Licence
 
 [MIT](LICENSE)

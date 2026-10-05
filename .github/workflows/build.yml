@@ -1,0 +1,99 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  # Called by release.yml so a release publishes exactly what this workflow built and tested.
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    name: Build, test and pack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # MinVer needs the full history and tags to compute the version.
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      # The package's client is built by an MSBuild target (npm ci + vite) during the .NET build.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: src/Umbuntu.Automate.ManualTriggerInput/Client/package-lock.json
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --project tests/Umbuntu.Automate.ManualTriggerInput.Tests --configuration Release --no-build
+
+      # Pack WITH a build (no --no-build): static web assets are only packed as staticwebassets/
+      # when the pack runs the static web assets pipeline; --no-build puts them under content/.
+      - name: Pack
+        run: dotnet pack src/Umbuntu.Automate.ManualTriggerInput --configuration Release --output artifacts
+
+      - name: Verify package contents
+        shell: bash
+        run: |
+          set -euo pipefail
+          nupkg=$(ls artifacts/*.nupkg)
+          echo "Inspecting $nupkg"
+          contents=$(unzip -Z1 "$nupkg")
+
+          required=(
+            "lib/net10.0/Umbuntu.Automate.ManualTriggerInput.dll"
+            "README.md"
+            "icon.png"
+            "staticwebassets/App_Plugins/UmbuntuAutomateManualTriggerInput/umbraco-package.json"
+            "staticwebassets/App_Plugins/UmbuntuAutomateManualTriggerInput/umbuntu-automate-manual-trigger-input.js"
+          )
+          for path in "${required[@]}"; do
+            grep -qxF "$path" <<<"$contents" || { echo "::error::Missing from package: $path"; exit 1; }
+          done
+
+          if grep -qE '^content(Files)?/' <<<"$contents"; then
+            echo "::error::Client assets were packed as content/ instead of staticwebassets/"; exit 1
+          fi
+          if grep -qE '\.map$' <<<"$contents"; then
+            echo "::error::Source maps must not ship in the package"; exit 1
+          fi
+
+          # The backoffice manifest must carry the same version as the package, plus the NuGet id for telemetry.
+          version=$(unzip -p "$nupkg" '*.nuspec' | grep -oP '(?<=<version>)[^<]+')
+          manifest=$(unzip -p "$nupkg" staticwebassets/App_Plugins/UmbuntuAutomateManualTriggerInput/umbraco-package.json)
+          jq -e --arg v "$version" '.version == $v and .id == "Umbuntu.Automate.ManualTriggerInput" and .allowTelemetry == true' <<<"$manifest" >/dev/null \
+            || { echo "::error::umbraco-package.json doesn't match package $version:"; echo "$manifest"; exit 1; }
+
+          # The Marketplace reads compatibility from the direct Umbraco.Cms.* dependency range.
+          unzip -p "$nupkg" '*.nuspec' | grep -q 'id="Umbraco.Cms.Core" version="\[18' \
+            || { echo "::error::Umbraco.Cms.Core dependency range missing or not Umbraco 18"; exit 1; }
+
+          echo "Package $version looks good."
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: packages
+          path: artifacts/*
+          if-no-files-found: error

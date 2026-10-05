@@ -43,13 +43,15 @@
     <Exec Command="npm ci" WorkingDirectory="Client" />
   </Target>
 
-  <!-- Depends on MinVer so $(Version) is resolved before it's stamped into umbraco-package.json. -->
-  <Target Name="NpmBuild" BeforeTargets="AssignTargetPaths" DependsOnTargets="NpmRestore;MinVer" Inputs="@(ClientAssetsInputs)" Outputs="$(IntermediateOutputPath)client.complete.txt">
+  <!-- Depends on MinVer so $(Version) is resolved before it's stamped into umbraco-package.json.
+       The version is part of the up-to-date marker so a new version (e.g. after a commit or tag)
+       re-runs the client build even when no client file changed. -->
+  <Target Name="NpmBuild" BeforeTargets="AssignTargetPaths" DependsOnTargets="NpmRestore;MinVer" Inputs="@(ClientAssetsInputs)" Outputs="$(IntermediateOutputPath)client.$(Version).complete.txt">
     <Message Importance="high" Text="Building Umbuntu.Automate.ManualTriggerInput client ($(Version))..." />
     <Exec Command="npm run build" WorkingDirectory="Client" EnvironmentVariables="PACKAGE_VERSION=$(Version)" />
     <ItemGroup>
       <_ClientBuildOutput Include="wwwroot\App_Plugins\**" />
     </ItemGroup>
-    <WriteLinesToFile File="$(IntermediateOutputPath)client.complete.txt" Lines="@(_ClientBuildOutput)" Overwrite="true" />
+    <WriteLinesToFile File="$(IntermediateOutputPath)client.$(Version).complete.txt" Lines="@(_ClientBuildOutput)" Overwrite="true" />
   </Target>
 </Project>
