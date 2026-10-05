@@ -4,8 +4,13 @@
     <File Path="Directory.Packages.props" />
     <File Path="README.md" />
     <File Path="CHANGELOG.md" />
+    <File Path="global.json" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/Umbuntu.Automate.ManualTriggerInput.TestSite/Umbuntu.Automate.ManualTriggerInput.TestSite.csproj" />
     <Project Path="src/Umbuntu.Automate.ManualTriggerInput/Umbuntu.Automate.ManualTriggerInput.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Umbuntu.Automate.ManualTriggerInput.Tests/Umbuntu.Automate.ManualTriggerInput.Tests.csproj" />
   </Folder>
 </Solution>

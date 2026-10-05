@@ -17,4 +17,18 @@
   <ItemGroup>
     <PackageVersion Include="MinVer" Version="6.0.0" />
   </ItemGroup>
+
+  <!-- Tests only. -->
+  <ItemGroup>
+    <PackageVersion Include="xunit.v3" Version="4.0.1" />
+    <PackageVersion Include="NSubstitute" Version="6.2.0" />
+  </ItemGroup>
+
+  <!-- Test site only (never part of the package): a current Umbraco 18 + Automate install. -->
+  <ItemGroup>
+    <PackageVersion Include="Umbraco.Cms" Version="18.2.0" />
+    <PackageVersion Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="18.2.0" />
+    <PackageVersion Include="Umbraco.Automate" Version="18.5.0" />
+    <PackageVersion Include="Microsoft.ICU.ICU4C.Runtime" Version="72.1.0.3" />
+  </ItemGroup>
 </Project>

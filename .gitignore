@@ -27,3 +27,7 @@ src/**/appsettings.*.local.json
 *.suo
 .DS_Store
 Thumbs.db
+
+# Umbraco-generated schema files in the test site
+src/**/appsettings-schema*.json
+src/**/umbraco-package-schema.json
