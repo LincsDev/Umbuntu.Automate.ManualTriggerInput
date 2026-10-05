@@ -15,7 +15,7 @@
 
   <!-- Build-time only. -->
   <ItemGroup>
-    <PackageVersion Include="MinVer" Version="6.0.0" />
+    <PackageVersion Include="MinVer" Version="8.0.0" />
   </ItemGroup>
 
   <!-- Tests only. -->
