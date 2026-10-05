@@ -1,0 +1,15 @@
+{
+  "$schema": "../node_modules/@umbraco-cms/backoffice/umbraco-package-schema.json",
+  "id": "Umbuntu.Automate.ManualTriggerInput",
+  "name": "Manual Trigger (with Input) for Umbraco Automate",
+  "version": "0.0.0",
+  "allowTelemetry": true,
+  "extensions": [
+    {
+      "name": "Umbuntu Automate Manual Trigger Input Bundle",
+      "alias": "Umbuntu.Automate.ManualTriggerInput.Bundle",
+      "type": "bundle",
+      "js": "/App_Plugins/UmbuntuAutomateManualTriggerInput/umbuntu-automate-manual-trigger-input.js"
+    }
+  ]
+}

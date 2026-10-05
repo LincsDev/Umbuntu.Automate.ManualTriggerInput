@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+    <!-- Serves the client build from /App_Plugins/... via static web assets, in the site and in the package. -->
+    <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Umbuntu.Automate.ManualTriggerInput</PackageId>
+    <Product>Umbuntu.Automate.ManualTriggerInput</Product>
+    <Title>Manual Trigger (with Input) for Umbraco Automate</Title>
+    <Description>Adds a "Manual Trigger (with Input)" to Umbraco Automate. Editors start the automation from a "Run with input…" action in the backoffice and enter text (for example a JSON object), which the automation's steps can use as ${trigger.triggerInput}. The built-in Manual Trigger cannot carry any data.</Description>
+    <PackageTags>umbraco umbraco-marketplace umbraco-automate automate workflow trigger manual-trigger</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Umbraco.Automate.Core" />
+    <PackageReference Include="Umbraco.Automate.Web" />
+    <PackageReference Include="Umbraco.Cms.Core" />
+    <PackageReference Include="MinVer" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="..\..\icon.png" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClientAssetsInputs Include="Client\**" Exclude="$(DefaultItemExcludes);Client\node_modules\**" />
+    <Content Remove="Client\**" />
+    <None Remove="Client\**" />
+  </ItemGroup>
+
+  <Target Name="NpmRestore" Inputs="Client\package.json;Client\package-lock.json" Outputs="Client\node_modules\.package-lock.json">
+    <Message Importance="high" Text="Restoring Umbuntu.Automate.ManualTriggerInput npm packages..." />
+    <Exec Command="npm ci" WorkingDirectory="Client" />
+  </Target>
+
+  <!-- Depends on MinVer so $(Version) is resolved before it's stamped into umbraco-package.json. -->
+  <Target Name="NpmBuild" BeforeTargets="AssignTargetPaths" DependsOnTargets="NpmRestore;MinVer" Inputs="@(ClientAssetsInputs)" Outputs="$(IntermediateOutputPath)client.complete.txt">
+    <Message Importance="high" Text="Building Umbuntu.Automate.ManualTriggerInput client ($(Version))..." />
+    <Exec Command="npm run build" WorkingDirectory="Client" EnvironmentVariables="PACKAGE_VERSION=$(Version)" />
+    <ItemGroup>
+      <_ClientBuildOutput Include="wwwroot\App_Plugins\**" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(IntermediateOutputPath)client.complete.txt" Lines="@(_ClientBuildOutput)" Overwrite="true" />
+  </Target>
+</Project>

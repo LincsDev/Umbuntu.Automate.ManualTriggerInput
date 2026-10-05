@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
+    <File Path="CHANGELOG.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Umbuntu.Automate.ManualTriggerInput/Umbuntu.Automate.ManualTriggerInput.csproj" />
+  </Folder>
+</Solution>

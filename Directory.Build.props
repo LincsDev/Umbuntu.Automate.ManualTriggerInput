@@ -1,0 +1,43 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+    <!-- Low/moderate/high advisories on transitive packages (e.g. OpenTelemetry.Api via
+         Automate's WorkflowCore) are upstream's to fix: keep them visible, don't fail the build.
+         Critical advisories (NU1904) still fail it. -->
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1902;NU1903</WarningsNotAsErrors>
+  </PropertyGroup>
+
+  <!-- Shared package metadata. Project-specific values (PackageId, Title, Description, Tags)
+       live in each packable project. -->
+  <PropertyGroup>
+    <Authors>Mitchell Nortje</Authors>
+    <Company>Mitchell Nortje</Company>
+    <Copyright>Copyright © Mitchell Nortje</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <!-- The Umbraco Marketplace looks for umbraco-marketplace.json at the root of this URL's
+         default branch, so it must point at the repository. -->
+    <PackageProjectUrl>https://github.com/LincsDev/Umbuntu.Automate.ManualTriggerInput</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/LincsDev/Umbuntu.Automate.ManualTriggerInput</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- Versions come from git tags (v1.2.3 → 1.2.3); untagged builds become prereleases. -->
+  <PropertyGroup>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <MinVerDefaultPreReleaseIdentifiers>alpha.0</MinVerDefaultPreReleaseIdentifiers>
+  </PropertyGroup>
+</Project>
