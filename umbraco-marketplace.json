@@ -1,0 +1,25 @@
+{
+  "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+  "Title": "Umbuntu.Automate.ManualTriggerInput",
+  "Description": "Run Umbraco Automate automations by hand and give them input. Adds a Manual Trigger (with Input) and a \"Run with input…\" backoffice action: editors type or paste text, such as a URL or a JSON object, and every step in the automation can use it as ${trigger.triggerInput}.",
+  "Category": "Developer Tools",
+  "AlternateCategory": "Editor Tools",
+  "PackageType": "Package",
+  "LicenseTypes": ["Free"],
+  "Tags": ["automate", "automation", "workflow", "trigger", "manual trigger", "backoffice"],
+  "IssueTrackerUrl": "https://github.com/LincsDev/Umbuntu.Automate.ManualTriggerInput/issues",
+  "ImageUrl": "https://github.com/lincsdev/Umbuntu.Automate.ManualTriggerInput/blob/main/icon.png",
+  "AuthorDetails": {
+    "Name": "Mitchell Nortje",
+    "Url": "https://github.com/lincsdev",
+    "ImageUrl": "https://github.com/lincsdev.png",
+    "Description": "Mitchell Nortje is a Senior Full Stack Developer at Spinbox Ltd"
+  },
+  "RelatedPackages": [
+    {
+      "PackageId": "Umbraco.Automate",
+      "Description": "Core automation system for Umbraco CMS"
+    }
+  ],
+   "LookingForContributors": true
+}
