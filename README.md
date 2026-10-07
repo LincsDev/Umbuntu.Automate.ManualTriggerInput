@@ -71,7 +71,7 @@ Issues and pull requests are welcome at [github.com/LincsDev/Umbuntu.Automate.Ma
 The backoffice client lives in `src/Umbuntu.Automate.ManualTriggerInput/Client`. `dotnet build` builds it automatically, which needs Node.js 22 or later. Run `npm run watch` in that folder for development builds with source maps.
 
 - **Tests:** `dotnet test --project tests/Umbuntu.Automate.ManualTriggerInput.Tests`
-- **Test site:** `dotnet run --project src/Umbuntu.Automate.ManualTriggerInput.TestSite` starts Umbraco and Automate with the package referenced directly. It uses a local SQLite database, and an admin user is created on first run. The admin's credentials are in `appsettings.Development.json` and are for local testing only. To create automations, first create an API user, then create an Automate workspace that uses it as its service account.
+- **Test site:** `dotnet run --project src/Umbuntu.Automate.ManualTriggerInput.TestSite` starts Umbraco and Automate with the package referenced directly. It uses a local SQLite database, and an admin user is created on first run. The admin's credentials are in `appsettings.Development.json` and are for local testing only. The site also adds an API user (`automate-api@example.test`), a **Test** workspace that uses it as its service account, and a published **Log trigger input** automation. To check the trigger end to end, choose **Run with input…** on that automation. The text you enter then appears in the site's log as `Run with input: …`. If any of these are deleted, they're created again on the next start.
 
 ### Releasing
 
