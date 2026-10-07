@@ -4,6 +4,14 @@ All notable changes to this package are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- The input size limit now lives with Automate's own settings, as `Umbraco:Automate:ManualTriggerInput:MaxInputBytes`.
+
+### Deprecated
+- `Umbuntu:ManualTriggerInput:MaxInputBytes`. It still works, but `Umbraco:Automate:ManualTriggerInput` takes precedence when both are set. It will be removed in 2.0.0.
+
 ## [1.0.0] - 2026-10-06
 
 ### Added
