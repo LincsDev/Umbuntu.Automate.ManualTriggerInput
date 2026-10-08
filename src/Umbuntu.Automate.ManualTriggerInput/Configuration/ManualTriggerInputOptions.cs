@@ -1,12 +1,19 @@
 namespace Umbuntu.Automate.ManualTriggerInput.Configuration;
 
 /// <summary>
-/// Settings for the "Run with input" endpoint, bound from <c>Umbuntu:ManualTriggerInput</c>
-/// in appsettings.
+/// Settings for the "Run with input" endpoint, bound from <c>Umbraco:Automate:ManualTriggerInput</c>
+/// in appsettings, alongside Automate's own settings.
 /// </summary>
 public sealed class ManualTriggerInputOptions
 {
-    public const string SectionName = "Umbuntu:ManualTriggerInput";
+    public const string SectionName = "Umbraco:Automate:ManualTriggerInput";
+
+    /// <summary>
+    /// The section 1.0.0 read from. Still bound, beneath <see cref="SectionName"/>, so existing
+    /// settings keep working.
+    /// </summary>
+    [Obsolete("Use SectionName (Umbraco:Automate:ManualTriggerInput). Scheduled for removal in 2.0.0.")]
+    public const string LegacySectionName = "Umbuntu:ManualTriggerInput";
 
     /// <summary>
     /// Maximum size of the trigger input, in UTF-8 bytes. The input is persisted with every run,

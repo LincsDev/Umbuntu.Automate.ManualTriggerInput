@@ -14,6 +14,9 @@ internal static class ManualTriggerInputServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration) =>
         services.AddOptions<ManualTriggerInputOptions>()
+#pragma warning disable CS0618 // The legacy section is bound deliberately, first, so the current one wins.
+            .Bind(configuration.GetSection(ManualTriggerInputOptions.LegacySectionName))
+#pragma warning restore CS0618
             .Bind(configuration.GetSection(ManualTriggerInputOptions.SectionName))
             .Validate(o => o.MaxInputBytes > 0, $"{ManualTriggerInputOptions.SectionName}:MaxInputBytes must be greater than zero.")
             .ValidateOnStart();

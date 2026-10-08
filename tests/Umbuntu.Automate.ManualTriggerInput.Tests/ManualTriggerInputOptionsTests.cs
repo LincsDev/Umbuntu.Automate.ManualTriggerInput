@@ -20,10 +20,33 @@ public class ManualTriggerInputOptionsTests
     {
         var options = Resolve(new Dictionary<string, string?>
         {
+            ["Umbraco:Automate:ManualTriggerInput:MaxInputBytes"] = "2097152",
+        });
+
+        Assert.Equal(2097152, options.MaxInputBytes);
+    }
+
+    [Fact]
+    public void Still_binds_the_limit_from_the_legacy_section()
+    {
+        var options = Resolve(new Dictionary<string, string?>
+        {
             ["Umbuntu:ManualTriggerInput:MaxInputBytes"] = "2097152",
         });
 
         Assert.Equal(2097152, options.MaxInputBytes);
+    }
+
+    [Fact]
+    public void Prefers_the_current_section_over_the_legacy_one()
+    {
+        var options = Resolve(new Dictionary<string, string?>
+        {
+            ["Umbuntu:ManualTriggerInput:MaxInputBytes"] = "2097152",
+            ["Umbraco:Automate:ManualTriggerInput:MaxInputBytes"] = "3145728",
+        });
+
+        Assert.Equal(3145728, options.MaxInputBytes);
     }
 
     [Theory]
@@ -33,7 +56,7 @@ public class ManualTriggerInputOptionsTests
     {
         var exception = Assert.Throws<OptionsValidationException>(() => Resolve(new Dictionary<string, string?>
         {
-            ["Umbuntu:ManualTriggerInput:MaxInputBytes"] = value,
+            ["Umbraco:Automate:ManualTriggerInput:MaxInputBytes"] = value,
         }));
 
         Assert.Contains("MaxInputBytes must be greater than zero", exception.Message);

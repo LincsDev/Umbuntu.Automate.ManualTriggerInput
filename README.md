@@ -38,15 +38,19 @@ The input is stored with every run, so its size is limited. The default limit is
 
 ```json
 {
-  "Umbuntu": {
-    "ManualTriggerInput": {
-      "MaxInputBytes": 2097152
+  "Umbraco": {
+    "Automate": {
+      "ManualTriggerInput": {
+        "MaxInputBytes": 2097152
+      }
     }
   }
 }
 ```
 
 The run modal shows how much of the limit has been used, and blocks input that is too large. The server enforces the same limit and returns `413 Payload Too Large` if it is exceeded. A value of zero or less stops the site from starting.
+
+Version 1.0.0 read this setting from `Umbuntu:ManualTriggerInput`. That location still works but is deprecated and will be removed in 2.0.0. If the setting is in both places, `Umbraco:Automate:ManualTriggerInput` is used.
 
 ## Security
 
