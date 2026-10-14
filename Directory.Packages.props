@@ -26,9 +26,9 @@
 
   <!-- Test site only (never part of the package): a current Umbraco 18 + Automate install. -->
   <ItemGroup>
-    <PackageVersion Include="Umbraco.Cms" Version="18.2.0" />
-    <PackageVersion Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="18.2.0" />
-    <PackageVersion Include="Umbraco.Automate" Version="18.5.0" />
+    <PackageVersion Include="Umbraco.Cms" Version="18.2.1" />
+    <PackageVersion Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="18.2.1" />
+    <PackageVersion Include="Umbraco.Automate" Version="18.5.1" />
     <PackageVersion Include="Microsoft.ICU.ICU4C.Runtime" Version="72.1.0.3" />
   </ItemGroup>
 </Project>
